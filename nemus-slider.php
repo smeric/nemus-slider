@@ -92,9 +92,14 @@ function nemus_slider_add_caps_to_admin() {
 		get_role( 'administrator' ),
 		get_role( 'editor' ),
 	);
-	foreach ($roles as $role) {
-		foreach ($caps as $cap) {
-			$role->add_cap( $cap );
+	foreach ( $roles as $role ) {
+		// If there is no editor role you've got a :
+		// PHP Fatal error:  Call to a member function add_cap() on a non-object in /PATH/TO/SITE/FOLDER/wp-content/plugins/nemus-slider/nemus-slider.php on line 97
+		// So we must check before triying to add_cap to an unexisting role :
+		if ( $role ) {
+			foreach ( $caps as $cap ) {
+				$role->add_cap( $cap );
+			}
 		}
 	}
 }
